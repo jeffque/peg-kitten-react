@@ -1,10 +1,12 @@
-import React from 'react';
 import logo from './logo.svg';
+import { Tabuleiro } from './peg/Tabuleiro'
+import { createTabuleiro } from './peg/Tab'
 import './App.css';
 
 function App() {
-  return (
-    <div className="App">
+  /*
+  <div className="App">
+      
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
@@ -20,6 +22,11 @@ function App() {
         </a>
       </header>
     </div>
+    */
+  return (<>
+    
+    <Tabuleiro tab={createTabuleiro()}></Tabuleiro>
+    </>
   );
 }
 
