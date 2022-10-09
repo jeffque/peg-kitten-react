@@ -3,7 +3,11 @@ type Posicao = 'LIVRE' | 'PECA' | 'BLOQUEADA';
 type Tab = {
     linhas: number,
     colunas: number,
-    t: Posicao[][]
+    t: Posicao[][],
+    active?: {
+        x: number,
+        y: number
+    }
 }
 
 function createTabuleiro(): Tab {

@@ -18,3 +18,21 @@
 [data-posicao="PECA"] {
     background-color: cadetblue;
 }
+
+[data-peca-ativa="true"] {
+    animation: glow 1s infinite alternate;
+}
+
+/*[data-peca-ativa="false"] {
+    animation-play-state: paused;
+    
+}*/
+
+@keyframes glow {
+    from {
+      box-shadow: 0 0 10px -10px #aef4af;
+    }
+    to {
+      box-shadow: 0 0 10px 10px #aef4af;
+    }
+  }
