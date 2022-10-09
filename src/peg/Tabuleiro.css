@@ -7,20 +7,44 @@
     width: 50px;
 }
 
+.game tr {
+    display: flex;
+}
+
 [data-posicao="BLOQUEADA"] {
-    background-color: darkgray;
+    color: darkgray;
+    background-color: currentColor;
+    border: 1px solid gray;
 }
 
 [data-posicao="LIVRE"] {
-    background-color: whitesmoke;
+    color: whitesmoke;
+    background-color: currentColor;
+    border: 1px solid gray;
 }
 
 [data-posicao="PECA"] {
-    background-color: cadetblue;
+    color: cadetblue;
+    --shadow-color: #274646;
+    --glow-color: #aef4af;
+    background-color: currentColor;
+    cursor: pointer;
+    box-shadow: 0px 0px black;
+    transition:
+        transform .3s ease,
+        box-shadow .3s ease;
+    border: 1px solid var(--shadow-color);
+}
+
+[data-posicao="PECA"]:not([data-peca-ativa="true"]):hover {
+    transform: translate(-3px, -3px);
+    box-shadow: 3px 3px var(--shadow-color);
+    outline: 1px solid var(--shadow-color);
 }
 
 [data-peca-ativa="true"] {
     animation: glow 1s infinite alternate;
+    transform: translate(0, 0);
 }
 
 /*[data-peca-ativa="false"] {
@@ -30,9 +54,10 @@
 
 @keyframes glow {
     from {
-      box-shadow: 0 0 10px -10px #aef4af;
+        box-shadow: 0 0 10px -10px var(--glow-color);
     }
+
     to {
-      box-shadow: 0 0 10px 10px #aef4af;
+        box-shadow: 0 0 10px 10px var(--glow-color);
     }
-  }
+}
