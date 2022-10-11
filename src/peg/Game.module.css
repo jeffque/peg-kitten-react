@@ -11,19 +11,19 @@
     display: flex;
 }
 
-.game [data-posicao="BLOQUEADA"] {
+.game [data-position="BLOCKED"] {
     color: darkgray;
     background-color: currentColor;
     border: 1px solid gray;
 }
 
-.game [data-posicao="LIVRE"] {
+.game [data-position="FREE"] {
     color: whitesmoke;
     background-color: currentColor;
     border: 1px solid gray;
 }
 
-.game [data-posicao="PECA"] {
+.game [data-position="PEG"] {
     color: cadetblue;
     --shadow-color: #274646;
     --glow-color: #aef4af;
@@ -36,13 +36,13 @@
     border: 1px solid var(--shadow-color);
 }
 
-.game [data-posicao="PECA"]:not([data-peca-ativa="true"]):hover {
+.game [data-position="PEG"]:not([data-peg-active="true"]):hover {
     transform: translate(-3px, -3px);
     box-shadow: 3px 3px var(--shadow-color);
     outline: 1px solid var(--shadow-color);
 }
 
-.game [data-peca-ativa="true"] {
+.game [data-peg-active="true"] {
     animation: glow 1s infinite alternate;
     transform: translate(0, 0);
 }
