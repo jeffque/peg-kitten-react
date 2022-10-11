@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Posicao, Tab } from './Tab.js'
 
-import './Tabuleiro.css'
+import styles from './Tabuleiro.module.css'
 
 type PosicaoProp = {
     p: Posicao,
@@ -138,7 +138,7 @@ function Tabuleiro({tab}: TabuleiroProp) {
         console.log("setando lasthook", lastHook)
         hook(true)
     }
-    return <table className='game'>
+    return <table className={styles.game}>
         <tbody>
         {
             myTab.t.map((linha, i) => <TabuleiroLinha p={i} linha={linha} clicked={clicked} tab={tab} key={i}/>)
