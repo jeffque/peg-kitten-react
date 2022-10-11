@@ -126,18 +126,17 @@ function Tabuleiro({tab}: TabuleiroProp) {
         setMyTab(novoTab);
         console.log("chamando lasthook", lastHook)
         lastHook.h(novoTab);
-        if (novoTab.active) {
-            setLastHook({h: (t: Tab) => {
-                console.log("lastHook")
-                hook(!!(t.active && t.active.x === x && t.active.y === y))
-            }});
-            console.log("setando lasthook", lastHook)
-            hook(true)
-        } else {
+        if (!novoTab.active) {
             setLastHook(defaultHook);
             hook(false)
+            return;
         }
-        //return novoTab;
+        setLastHook({h: (t: Tab) => {
+            console.log("lastHook")
+            hook(!!(t.active && t.active.x === x && t.active.y === y))
+        }});
+        console.log("setando lasthook", lastHook)
+        hook(true)
     }
     return <table className='game'>
         <tbody>
