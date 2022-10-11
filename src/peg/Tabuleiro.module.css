@@ -11,19 +11,19 @@
     display: flex;
 }
 
-[data-posicao="BLOQUEADA"] {
+.game [data-posicao="BLOQUEADA"] {
     color: darkgray;
     background-color: currentColor;
     border: 1px solid gray;
 }
 
-[data-posicao="LIVRE"] {
+.game [data-posicao="LIVRE"] {
     color: whitesmoke;
     background-color: currentColor;
     border: 1px solid gray;
 }
 
-[data-posicao="PECA"] {
+.game [data-posicao="PECA"] {
     color: cadetblue;
     --shadow-color: #274646;
     --glow-color: #aef4af;
@@ -36,21 +36,16 @@
     border: 1px solid var(--shadow-color);
 }
 
-[data-posicao="PECA"]:not([data-peca-ativa="true"]):hover {
+.game [data-posicao="PECA"]:not([data-peca-ativa="true"]):hover {
     transform: translate(-3px, -3px);
     box-shadow: 3px 3px var(--shadow-color);
     outline: 1px solid var(--shadow-color);
 }
 
-[data-peca-ativa="true"] {
+.game [data-peca-ativa="true"] {
     animation: glow 1s infinite alternate;
     transform: translate(0, 0);
 }
-
-/*[data-peca-ativa="false"] {
-    animation-play-state: paused;
-    
-}*/
 
 @keyframes glow {
     from {
