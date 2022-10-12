@@ -1,6 +1,6 @@
-type Position = 'FREE' | 'PEG' | 'BLOCKED';
+export type Position = 'FREE' | 'PEG' | 'BLOCKED';
 
-type Board = {
+export type Board = {
     lines: number,
     columns: number,
     t: Position[][]
@@ -45,7 +45,7 @@ function desserializeBoard(s: string): Board {
     }
 }
 
-function createBoard(modelo?: string): Board {
+export function createBoard(modelo?: string): Board {
     if (!modelo) {
         modelo = '7_7_BBPPPBB' +
                      'BBPPPBB' +
@@ -57,7 +57,3 @@ function createBoard(modelo?: string): Board {
     }
     return desserializeBoard(modelo);
 }
-
-export { createBoard };
-export type { Board, Position };
-
