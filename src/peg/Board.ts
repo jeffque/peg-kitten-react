@@ -3,7 +3,15 @@ export type Position = 'FREE' | 'PEG' | 'BLOCKED';
 export type Board = {
     lines: number,
     columns: number,
-    t: Position[][]
+    tiles: Position[][]
+}
+
+type TileModel = {
+    size: {
+        columns: number,
+        lines: number
+    },
+    tiles: string;
 }
 
 function char2Position(ch: string): Position {
@@ -16,44 +24,52 @@ function char2Position(ch: string): Position {
     }
 }
 
-function desserializeBoard(s: string): Board {
-    const fragments = s.split('_');
-    const lines = Number.parseInt(fragments[0]);
-    const columns = Number.parseInt(fragments[1]);
-    const t: Position[][] = [];
-    const stringLen = fragments[2].length;
+function desserializeBoard(model: TileModel): Board {
+    const lines = model.size.lines;
+    const columns = model.size.columns;
+    const tiles: Position[][] = [];
+    const stringLen = model.tiles.length;
     const expectedLen = lines * columns;
-    console.log({lines, columns, fragments})
+    console.log({lines, columns, model})
+
     for (let i = 0; i < Math.min(stringLen, expectedLen); i++) {
-        const ch = fragments[2][i];
+        const ch = model.tiles[i];
         const c = i % columns;
         const l = Math.floor((i-c)/columns);
-        console.log({i, l, c, t, len: t.length})
-        if (t.length <= l) t.push([])
-        t[l][c] = char2Position(ch);
+        console.log({i, l, c, t: tiles, len: tiles.length})
+        if (tiles.length <= l) tiles.push([])
+        tiles[l][c] = char2Position(ch);
     }
+
     for (let i = expectedLen; i < stringLen; i++) {
         const c = i % columns;
         const l = Math.floor((i-c)/columns);
-        if (t.length <= l) t.push([])
-        t[l][c] = 'BLOCKED';
+        if (tiles.length <= l) tiles.push([])
+        tiles[l][c] = 'BLOCKED';
     }
+    
     return {
         lines,
         columns,
-        t
+        tiles
     }
 }
 
-export function createBoard(modelo?: string): Board {
-    if (!modelo) {
-        modelo = '7_7_BBPPPBB' +
-                     'BBPPPBB' +
-                     'PPPPPPP' +
-                     'PPPFPPP' +
-                     'PPPPPPP' +
-                     'BBPPPBB' +
-                     'BBPPPBB';
+export function createBoard(model?: TileModel): Board {
+    if (!model) {
+        model = {
+            size: {
+                lines: 7,
+                columns: 7
+            },
+            tiles: 'BBPPPBB' +
+                    'BBPPPBB' +
+                    'PPPPPPP' +
+                    'PPPFPPP' +
+                    'PPPPPPP' +
+                    'BBPPPBB' +
+                    'BBPPPBB'
+        };
     }
-    return desserializeBoard(modelo);
+    return desserializeBoard(model);
 }
