@@ -54,7 +54,7 @@ function Gameboard({board}: GameboardProp) {
     const [activePosition, setActivePosition] = useState<ClickablePosition>()
     function apenasAlteraTab(clickedHere: ClickablePosition): { newBoard: Board, activePos?: ClickablePosition} {
         const {x, y} = clickedHere
-        const whereClicked = myBoard.t[x][y];
+        const whereClicked = myBoard.tiles[x][y];
         console.log(`clicked on ${whereClicked}`)
         if (whereClicked === 'BLOCKED') {
             return { newBoard: myBoard }
@@ -72,8 +72,8 @@ function Gameboard({board}: GameboardProp) {
         const newBoard = { ...myBoard};
 
         function move(origin: ClickablePosition, half: ClickablePosition, dest: ClickablePosition) {
-            newBoard.t[origin.x][origin.y] = newBoard.t[half.x][half.y] = 'FREE'
-            newBoard.t[dest.x][dest.y] = 'PEG'
+            newBoard.tiles[origin.x][origin.y] = newBoard.tiles[half.x][half.y] = 'FREE'
+            newBoard.tiles[dest.x][dest.y] = 'PEG'
         }
         if (x === actX) { // same line click
             let halfY: number|null;
@@ -86,7 +86,7 @@ function Gameboard({board}: GameboardProp) {
             }
 
             if (halfY != null) {
-                if (myBoard.t[x][halfY] === 'PEG') {
+                if (myBoard.tiles[x][halfY] === 'PEG') {
                     move(oldPos, {x, y: halfY}, clickedHere);
                 }
             }
@@ -102,7 +102,7 @@ function Gameboard({board}: GameboardProp) {
             }
 
             if (halfX != null) {
-                if (myBoard.t[halfX][y] === 'PEG') {
+                if (myBoard.tiles[halfX][y] === 'PEG') {
                     console.log("at last a valida move")
                     move(oldPos, {x: halfX, y}, clickedHere);
                 }
@@ -140,7 +140,7 @@ function Gameboard({board}: GameboardProp) {
     return <table className={styles.game}>
         <tbody>
         {
-            myBoard.t.map((line, i) => <GameboardLine p={i} line={line} clicked={clicked} key={i}/>)
+            myBoard.tiles.map((line, i) => <GameboardLine p={i} line={line} clicked={clicked} key={i}/>)
         }
         </tbody>
     </table>
