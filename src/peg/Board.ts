@@ -1,63 +1,61 @@
-type Position = 'FREE' | 'PEG' | 'BLOCKED';
+export type Position = "FREE" | "PEG" | "BLOCKED";
+type TileTypes = "F" | "P" | "B";
+type TyleTypesObject = {
+  [key in TileTypes]: Position;
+};
 
-type Board = {
-    lines: number,
-    columns: number,
-    t: Position[][]
+export type Board = {
+  rows: number;
+  columns: number;
+  tiles: Position[][];
+};
+
+type TileModel = {
+  size: {
+    columns: number;
+    rows: number;
+  };
+  tiles: string;
+};
+
+const tileTypes: TyleTypesObject = {
+  F: "FREE",
+  P: "PEG",
+  B: "BLOCKED",
+};
+
+const convertLetterToType = (substring: string) =>
+  tileTypes[substring as TileTypes] + "|";
+
+function desserializeBoard(model: TileModel): Board {
+  const { rows, columns } = model.size;
+
+  const tilesTypesString = model.tiles
+    .replaceAll(/[A-Z]/g, convertLetterToType)
+    .split("|");
+
+  const tilesArray: Position[][] = [];
+
+  for (let i = 0; i < columns * rows; i += columns) {
+    tilesArray.push(tilesTypesString.slice(i, i + columns) as Position[]);
+  }
+
+  return {
+    rows,
+    columns,
+    tiles: tilesArray,
+  };
 }
 
-function char2Position(ch: string): Position {
-    switch (ch) {
-        case 'F': return 'FREE';
-        case 'P': return 'PEG';
-        case 'B':
-        default:
-            return 'BLOCKED';
-    }
+export function createBoard(model?: TileModel): Board {
+  if (!model) {
+    model = {
+      size: {
+        rows: 7,
+        columns: 7,
+      },
+      tiles: "BBPPPBBBBPPPBBPPPPPPPPPPFPPPPPPPPPPBBPPPBBBBPPPBB",
+    };
+  }
+  return desserializeBoard(model);
 }
-
-function desserializeBoard(s: string): Board {
-    const fragments = s.split('_');
-    const lines = Number.parseInt(fragments[0]);
-    const columns = Number.parseInt(fragments[1]);
-    const t: Position[][] = [];
-    const stringLen = fragments[2].length;
-    const expectedLen = lines * columns;
-    console.log({lines, columns, fragments})
-    for (let i = 0; i < Math.min(stringLen, expectedLen); i++) {
-        const ch = fragments[2][i];
-        const c = i % columns;
-        const l = Math.floor((i-c)/columns);
-        console.log({i, l, c, t, len: t.length})
-        if (t.length <= l) t.push([])
-        t[l][c] = char2Position(ch);
-    }
-    for (let i = expectedLen; i < stringLen; i++) {
-        const c = i % columns;
-        const l = Math.floor((i-c)/columns);
-        if (t.length <= l) t.push([])
-        t[l][c] = 'BLOCKED';
-    }
-    return {
-        lines,
-        columns,
-        t
-    }
-}
-
-function createBoard(modelo?: string): Board {
-    if (!modelo) {
-        modelo = '7_7_BBPPPBB' +
-                     'BBPPPBB' +
-                     'PPPPPPP' +
-                     'PPPFPPP' +
-                     'PPPPPPP' +
-                     'BBPPPBB' +
-                     'BBPPPBB';
-    }
-    return desserializeBoard(modelo);
-}
-
-export { createBoard };
-export type { Board, Position };
-
