@@ -1,75 +1,61 @@
-export type Position = 'FREE' | 'PEG' | 'BLOCKED';
+export type Position = "FREE" | "PEG" | "BLOCKED";
+type TileTypes = "F" | "P" | "B";
+type TyleTypesObject = {
+  [key in TileTypes]: Position;
+};
 
 export type Board = {
-    lines: number,
-    columns: number,
-    tiles: Position[][]
-}
+  rows: number;
+  columns: number;
+  tiles: Position[][];
+};
 
 type TileModel = {
-    size: {
-        columns: number,
-        lines: number
-    },
-    tiles: string;
-}
+  size: {
+    columns: number;
+    rows: number;
+  };
+  tiles: string;
+};
 
-function char2Position(ch: string): Position {
-    switch (ch) {
-        case 'F': return 'FREE';
-        case 'P': return 'PEG';
-        case 'B':
-        default:
-            return 'BLOCKED';
-    }
-}
+const tileTypes: TyleTypesObject = {
+  F: "FREE",
+  P: "PEG",
+  B: "BLOCKED",
+};
+
+const convertLetterToType = (substring: string) =>
+  tileTypes[substring as TileTypes] + "|";
 
 function desserializeBoard(model: TileModel): Board {
-    const lines = model.size.lines;
-    const columns = model.size.columns;
-    const tiles: Position[][] = [];
-    const stringLen = model.tiles.length;
-    const expectedLen = lines * columns;
-    console.log({lines, columns, model})
+  const { rows, columns } = model.size;
 
-    for (let i = 0; i < Math.min(stringLen, expectedLen); i++) {
-        const ch = model.tiles[i];
-        const c = i % columns;
-        const l = Math.floor((i-c)/columns);
-        console.log({i, l, c, t: tiles, len: tiles.length})
-        if (tiles.length <= l) tiles.push([])
-        tiles[l][c] = char2Position(ch);
-    }
+  const tilesTypesString = model.tiles
+    .replaceAll(/[A-Z]/g, convertLetterToType)
+    .split("|");
 
-    for (let i = expectedLen; i < stringLen; i++) {
-        const c = i % columns;
-        const l = Math.floor((i-c)/columns);
-        if (tiles.length <= l) tiles.push([])
-        tiles[l][c] = 'BLOCKED';
-    }
-    
-    return {
-        lines,
-        columns,
-        tiles
-    }
+  const tilesArray: Position[][] = [];
+
+  for (let i = 0; i < columns * rows; i += columns) {
+    tilesArray.push(tilesTypesString.slice(i, i + columns) as Position[]);
+  }
+
+  return {
+    rows,
+    columns,
+    tiles: tilesArray,
+  };
 }
 
 export function createBoard(model?: TileModel): Board {
-    if (!model) {
-        model = {
-            size: {
-                lines: 7,
-                columns: 7
-            },
-            tiles: 'BBPPPBB' +
-                    'BBPPPBB' +
-                    'PPPPPPP' +
-                    'PPPFPPP' +
-                    'PPPPPPP' +
-                    'BBPPPBB' +
-                    'BBPPPBB'
-        };
-    }
-    return desserializeBoard(model);
+  if (!model) {
+    model = {
+      size: {
+        rows: 7,
+        columns: 7,
+      },
+      tiles: "BBPPPBBBBPPPBBPPPPPPPPPPFPPPPPPPPPPBBPPPBBBBPPPBB",
+    };
+  }
+  return desserializeBoard(model);
 }
