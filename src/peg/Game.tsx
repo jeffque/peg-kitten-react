@@ -49,7 +49,7 @@ type GameboardProp = {
     playable?: boolean
 }
 
-function Gameboard({board}: GameboardProp) {
+export function Gameboard({board}: GameboardProp) {
     const [myBoard, setMyBoard] = useState(board);
     const [activePosition, setActivePosition] = useState<ClickablePosition>()
     function apenasAlteraTab(clickedHere: ClickablePosition): { newBoard: Board, activePos?: ClickablePosition} {
@@ -145,5 +145,3 @@ function Gameboard({board}: GameboardProp) {
         </tbody>
     </table>
 }
-
-export { Gameboard }
